@@ -1,23 +1,33 @@
-from threading import Thread
+from threading import Thread 
+import os 
 from request import request
-
+import sys
+import time
 
 def curl_function():
     print("lanzando curl")
     return request()
 
 
-def create_threads(n):
+def create_threads(files_list):
     try:
         threads, results = [], []
-        for _ in range(n):
+        
+        for _ in range(files_list):
             thread_object = ThreadWithReturnValue(target = curl_function)
             threads.append(thread_object)
             thread_object.start()
+            #time.sleep(0.1)
 
         for thread in threads:
             results.append(thread.join())
 
+        i=0
+        for result in results:
+            with open(f"resultado_{i}", "w") as f:
+                f.write(str(result))
+            i+=1
+        #print(str(results))
         return
 
     except Exception as e:
@@ -50,8 +60,9 @@ class ThreadWithReturnValue(Thread):
             raise e
 
 
+
 def main():
-    create_threads(10)
+    create_threads(int(sys.argv[1]))
 
 
 if __name__ == '__main__':
