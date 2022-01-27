@@ -17,7 +17,7 @@ def create_threads(files_list):
             thread_object = ThreadWithReturnValue(target = curl_function)
             threads.append(thread_object)
             thread_object.start()
-            #time.sleep(0.1)
+            time.sleep(3)
 
         for thread in threads:
             results.append(thread.join())
